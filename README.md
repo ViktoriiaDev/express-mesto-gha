@@ -5,7 +5,7 @@
 
 ## Настройка бейджей статуса тестов
 Перед началом работы над проектом рекомендуется исправить бейджи, отражающие статус прохождения тестов.
-Для этого замените разметку бейджей на следующий фрагмент, подставив вместо `ViktoriiaDev` и `${имя_репозитория}` соответствующие значения.
+Для этого замените разметку бейджей на следующий фрагмент, подставив вместо `ViktoriiaDev` и `express-mesto-gha` соответствующие значения.
 
 ```
 [![Tests for sprint 13](https://github.com/ViktoriiaDev/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/ViktoriiaDev/express-mesto-gha/actions/workflows/tests-13-sprint.yml) 
