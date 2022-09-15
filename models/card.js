@@ -14,12 +14,12 @@ const cardSchema = new mongoose.Schema({
   },
 
   owner: {
-    type: ObjectId,
+    type: mongoose.Schema.ObjectId,
     required: true
   },
 
   likes: [{
-    type: ObjectId,
+    type: mongoose.Schema.ObjectId,
     default: []
   }],
 
