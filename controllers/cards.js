@@ -69,7 +69,7 @@ module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: _id } },
-    { new: true }
+    { new: true },
   )
     .orFail(() => {
       throw new Error('Передан несуществующий _id карточки');
@@ -97,7 +97,7 @@ module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: _id } },
-    { new: true }
+    { new: true },
   )
     .orFail(() => {
       throw new Error('Передан несуществующий _id карточки');
