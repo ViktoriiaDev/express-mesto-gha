@@ -7,7 +7,7 @@ const {
 
 module.exports.getUsers = (req, res) => {
   User.find({})
-    .then((users) => res.send({ data: users }))
+    .then((users) => res.status(200).send({ data: users }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res
@@ -28,9 +28,15 @@ module.exports.getUserById = (req, res) => {
     .orFail(() => {
       throw new Error('Пользователь по указанному _id не найден');
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.status(200).send({ data: user }))
     .catch((error) => {
-      if (error.name === 'Error') {
+      if (error.name === 'ValidationError') {
+        res
+          .status(incorrectDataError)
+          .send({
+            message: 'Переданы некорректные данные для получения пользователя',
+          });
+      } else if (error.name === 'Error') {
         res
           .status(dataNotFoundError)
           .send({ message: 'Пользователь по указанному _id не найден' });
@@ -45,7 +51,7 @@ module.exports.getUserById = (req, res) => {
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.status(200).send({ data: user }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res
@@ -72,7 +78,7 @@ module.exports.patchUser = (req, res) => {
     .orFail(() => {
       throw new Error('Пользователь с данным _id не найден');
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.status(200).send({ data: user }))
     .catch((error) => {
       if (error.name === 'Error') {
         res
@@ -99,7 +105,7 @@ module.exports.patchUserAvatar = (req, res) => {
     .orFail(() => {
       throw new Error('Пользователь с данным _id не найден');
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.status(200).send({ data: user }))
     .catch((error) => {
       if (error.name === 'Error') {
         res
