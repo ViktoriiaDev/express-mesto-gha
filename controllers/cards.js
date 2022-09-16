@@ -32,7 +32,7 @@ module.exports.createCard = (req, res) => {
   })
     .then((card) => res.send({ data: card }))
     .catch((error) => {
-      if (error.name === 'Error') {
+      if (error.name === 'ValidationError') {
         res.status(incorrectDataError).send({
           message: 'Переданы некорректные данные при создании карточки',
         });
@@ -76,11 +76,12 @@ module.exports.likeCard = (req, res) => {
     })
     .then((card) => res.send({ data: card }))
     .catch((error) => {
+      console.log(error.name)
       if (error.name === 'CastError') {
         res
           .status(dataNotFoundError)
           .send({ message: 'Передан несуществующий _id карточки' });
-      } else if (error.name === 'ValidationError') {
+      } else if (error.name === 'Error') {
         res.status(incorrectDataError).send({
           message: 'Переданы некорректные данные для постановки лайка',
         });
