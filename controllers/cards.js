@@ -78,10 +78,10 @@ module.exports.likeCard = (req, res) => {
     .catch((error) => {
       if (error.name === 'CastError') {
         res
-          .status(dataNotFoundError)
+          .status(incorrectDataError)
           .send({ message: 'Передан несуществующий _id карточки' });
       } else if (error.name === 'Error') {
-        res.status(incorrectDataError).send({
+        res.status(dataNotFoundError).send({
           message: 'Переданы некорректные данные для постановки лайка',
         });
       } else {
@@ -106,10 +106,10 @@ module.exports.dislikeCard = (req, res) => {
     .catch((error) => {
       if (error.name === 'CastError') {
         res
-          .status(dataNotFoundError)
+          .status(incorrectDataError)
           .send({ message: 'Передан несуществующий _id карточки' });
       } else if (error.name === 'Error') {
-        res.status(incorrectDataError).send({
+        res.status(dataNotFoundError).send({
           message: 'Переданы некорректные данные для снятия лайка',
         });
       } else {
