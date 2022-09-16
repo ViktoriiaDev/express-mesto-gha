@@ -7,7 +7,7 @@ const {
 
 module.exports.getUsers = (req, res) => {
   User.find({})
-    .then((users) => res.status(200).send({ data: users }))
+    .then((users) => res.send({ data: users }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res
@@ -28,9 +28,9 @@ module.exports.getUserById = (req, res) => {
     .orFail(() => {
       throw new Error('Пользователь по указанному _id не найден');
     })
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.send({ data: user }))
     .catch((error) => {
-      if (error.name === 'ValidationError') {
+      if (error.name === 'CastError') {
         res
           .status(incorrectDataError)
           .send({
@@ -51,7 +51,7 @@ module.exports.getUserById = (req, res) => {
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.send({ data: user }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res
@@ -78,7 +78,7 @@ module.exports.patchUser = (req, res) => {
     .orFail(() => {
       throw new Error('Пользователь с данным _id не найден');
     })
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.send({ data: user }))
     .catch((error) => {
       if (error.name === 'Error') {
         res
@@ -105,7 +105,7 @@ module.exports.patchUserAvatar = (req, res) => {
     .orFail(() => {
       throw new Error('Пользователь с данным _id не найден');
     })
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.send({ data: user }))
     .catch((error) => {
       if (error.name === 'Error') {
         res

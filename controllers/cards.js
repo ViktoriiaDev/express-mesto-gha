@@ -7,7 +7,7 @@ const {
 
 module.exports.getCards = (req, res) => {
   Card.find({})
-    .then((cards) => res.status(200).send({ data: cards }))
+    .then((cards) => res.send({ data: cards }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res.status(incorrectDataError).send({
@@ -27,7 +27,7 @@ module.exports.createCard = (req, res) => {
   Card.create({
     name, link, likes, owner: _id,
   })
-    .then((card) => res.status(200).send({ data: card }))
+    .then((card) => res.send({ data: card }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res.status(incorrectDataError).send({
@@ -47,7 +47,7 @@ module.exports.deleteCard = (req, res) => {
     .orFail(() => {
       throw new Error('Карточка с указанным _id не найдена');
     })
-    .then((card) => res.status(200).send({ data: card }))
+    .then((card) => res.send({ data: card }))
     .catch((error) => {
       if (error.name === 'CastError') {
         res
@@ -71,7 +71,7 @@ module.exports.likeCard = (req, res) => {
     .orFail(() => {
       throw new Error('Передан несуществующий _id карточки');
     })
-    .then((card) => res.status(200).send({ data: card }))
+    .then((card) => res.send({ data: card }))
     .catch((error) => {
       if (error.name === 'CastError') {
         res
@@ -99,7 +99,7 @@ module.exports.dislikeCard = (req, res) => {
     .orFail(() => {
       throw new Error('Передан несуществующий _id карточки');
     })
-    .then((card) => res.status(200).send({ data: card }))
+    .then((card) => res.send({ data: card }))
     .catch((error) => {
       if (error.name === 'CastError') {
         res
