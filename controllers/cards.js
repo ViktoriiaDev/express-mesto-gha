@@ -25,11 +25,23 @@ module.exports.createCard = (req, res) => {
   const { name, link, likes } = req.body;
   const { _id } = req.user;
   Card.create({
-    name, link, likes, owner: _id,
+    name,
+    link,
+    likes,
+    owner: _id,
   })
+    .orFail(() => {
+      throw new Error('Карточка не найдена');
+    })
     .then((card) => res.send({ data: card }))
     .catch((error) => {
-      if (error.name === 'ValidationError') {
+      if (error.name === 'CastError') {
+        res
+          .status(incorrectDataError)
+          .send({
+            message: 'Переданы некорректные данные для получения пользователя',
+          });
+      } else if (error.name === 'Error') {
         res.status(incorrectDataError).send({
           message: 'Переданы некорректные данные при создании карточки',
         });
@@ -66,7 +78,7 @@ module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: _id } },
-    { new: true },
+    { new: true }
   )
     .orFail(() => {
       throw new Error('Передан несуществующий _id карточки');
@@ -94,7 +106,7 @@ module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: _id } },
-    { new: true },
+    { new: true }
   )
     .orFail(() => {
       throw new Error('Передан несуществующий _id карточки');
