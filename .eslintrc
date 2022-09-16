@@ -1,4 +1,6 @@
 {
   "extends": "airbnb-base",
-  "allowAfterThis": false
+  "rules": {
+    "allowAfterThis": 0
+  }
 }

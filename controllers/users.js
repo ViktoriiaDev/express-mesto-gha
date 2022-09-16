@@ -1,88 +1,120 @@
-const User = require("../models/user");
+const User = require('../models/user');
+const {
+  incorrectDataError,
+  dataNotFoundError,
+  serverError,
+} = require('../respons-statuses');
 
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
-    .catch((err) => {
-      let message = err.message;
-      if (err.status === incorrectDataError) {
-        message = "Переданы некорректные данные при получении данных пользователя";
+    .catch((error) => {
+      if (error.name === 'ValidationError') {
+        res
+          .status(incorrectDataError)
+          .send({
+            message: 'Переданы некорректные данные при создании пользователя',
+          });
+      } else {
+        res
+          .status(serverError)
+          .send({ message: 'На сервере произошла ошибка' });
       }
-      if (err.status === serverError) {
-        message = "На сервере произошла ошибка";
-      }
-      res.status(err.status).send({ message });
     });
 };
 
 module.exports.getUserById = (req, res) => {
   User.findById(req.params.id)
+    .orFail(() => {
+      throw new Error('Пользователь по указанному _id не найден');
+    })
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      let message = err.message;
-      if (err.status === dataNotFoundError) {
-        message = 'Пользователь по указанному _id не найден'
+    .catch((error) => {
+      if (error.name === 'Error') {
+        res
+          .status(dataNotFoundError)
+          .send({ message: 'Пользователь по указанному _id не найден' });
+      } else {
+        res
+          .status(serverError)
+          .send({ message: 'На сервере произошла ошибка' });
       }
-      if (err.status === serverError) {
-        message = 'На сервере произошла ошибка'
-      }
-      res.status(err.status).send({ message })
     });
 };
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
-
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      let message = err.message;
-      if (err.status === incorrectDataError) {
-        message = "Переданы некорректные данные при создании пользователя";
+    .catch((error) => {
+      if (error.name === 'ValidationError') {
+        res
+          .status(incorrectDataError)
+          .send({
+            message: 'Переданы некорректные данные при создании пользователя',
+          });
+      } else {
+        res
+          .status(serverError)
+          .send({ message: 'На сервере произошла ошибка' });
       }
-      if (err.status === serverError) {
-        message = "На сервере произошла ошибка";
-      }
-      res.status(err.status).send({ message });
     });
 };
 
 module.exports.patchUser = (req, res) => {
   const { name, about } = req.body;
   const { _id } = req.user;
-  User.findOneAndUpdate({ _id }, { name, about }, { new: true })
+  User.findOneAndUpdate(
+    { _id },
+    { name, about },
+    { new: true, runValidators: true },
+  )
+    .orFail(() => {
+      throw new Error('Пользователь с данным _id не найден');
+    })
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      let message = err.message;
-      if (err.status === incorrectDataError) {
-        message = 'Переданы некорректные данные для обновлении профиля'
+    .catch((error) => {
+      if (error.name === 'Error') {
+        res
+          .status(dataNotFoundError)
+          .send({ message: 'Пользователь с данным _id не найден' });
+      } else if (error.name === 'ValidationError') {
+        res
+          .status(incorrectDataError)
+          .send({
+            message: 'Переданы некорректные данные при обновлении пользователя',
+          });
+      } else {
+        res
+          .status(serverError)
+          .send({ message: 'На сервере произошла ошибка' });
       }
-      if (err.status === dataNotFoundError) {
-        message = 'Пользователь с данным _id не найден'
-      }
-      if (err.status === serverError) {
-        message = 'На сервере произошла ошибка'
-      }
-      res.status(err.status).send({ message })
     });
 };
 
 module.exports.patchUserAvatar = (req, res) => {
   const { avatar } = req.body;
   const { _id } = req.user;
-  User.findOneAndUpdate({ _id }, { avatar }, { new: true })
+  User.findOneAndUpdate({ _id }, { avatar }, { new: true, runValidators: true })
+    .orFail(() => {
+      throw new Error('Пользователь с данным _id не найден');
+    })
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      let message = err.message;
-      if (err.status === incorrectDataError) {
-        message = 'Переданы некорректные данные для обновлении аватара'
+    .catch((error) => {
+      if (error.name === 'Error') {
+        res
+          .status(dataNotFoundError)
+          .send({ message: 'Пользователь с данным _id не найден' });
+      } else if (error.name === 'ValidationError') {
+        res
+          .status(incorrectDataError)
+          .send({
+            message: 'Переданы некорректные данные при обновлении аватара',
+          });
+      } else {
+        res
+          .status(serverError)
+          .send({ message: 'На сервере произошла ошибка' });
       }
-      if (err.status === dataNotFoundError) {
-        message = 'Пользователь с данным _id не найден'
-      }
-      if (err.status === serverError) {
-        message = 'На сервере произошла ошибка'
-      }
-      res.status(err.status).send({ message })
     });
 };

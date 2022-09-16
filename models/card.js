@@ -10,23 +10,23 @@ const cardSchema = new mongoose.Schema({
 
   link: {
     type: String,
-    required: true
+    required: true,
   },
 
   owner: {
     type: mongoose.Schema.ObjectId,
-    required: true
+    required: true,
   },
 
   likes: [{
     type: mongoose.Schema.ObjectId,
-    default: []
+    default: [],
   }],
 
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model('card', cardSchema);
