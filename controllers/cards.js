@@ -30,18 +30,9 @@ module.exports.createCard = (req, res) => {
     likes,
     owner: _id,
   })
-    .orFail(() => {
-      throw new Error('Карточка не найдена');
-    })
     .then((card) => res.send({ data: card }))
     .catch((error) => {
-      if (error.name === 'CastError') {
-        res
-          .status(incorrectDataError)
-          .send({
-            message: 'Переданы некорректные данные для получения пользователя',
-          });
-      } else if (error.name === 'Error') {
+      if (error.name === 'Error') {
         res.status(incorrectDataError).send({
           message: 'Переданы некорректные данные при создании карточки',
         });
