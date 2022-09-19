@@ -10,8 +10,8 @@ module.exports.getCards = (req, res) => {
     .then((cards) => res.send({ data: cards }))
     .catch(() => {
       res
-          .status(serverError)
-          .send({ message: 'На сервере произошла ошибка' });
+        .status(serverError)
+        .send({ message: 'На сервере произошла ошибка' });
     });
 };
 
