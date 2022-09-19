@@ -8,16 +8,10 @@ const {
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then((cards) => res.send({ data: cards }))
-    .catch((error) => {
-      if (error.name === 'ValidationError') {
-        res.status(incorrectDataError).send({
-          message: 'Переданы некорректные данные при получении карточки',
-        });
-      } else {
-        res
+    .catch(() => {
+      res
           .status(serverError)
           .send({ message: 'На сервере произошла ошибка' });
-      }
     });
 };
 
@@ -55,10 +49,10 @@ module.exports.deleteCard = (req, res) => {
       if (error.name === 'CastError') {
         res
           .status(incorrectDataError)
-          .send({ message: 'Карточка с указанным _id не найдена' });
+          .send({ message: 'Невалидный _id не найдена' });
       } else if (error.name === 'Error') {
         res.status(dataNotFoundError).send({
-          message: 'Переданы некорректные данные для постановки лайка',
+          message: error.message,
         });
       } else {
         res
@@ -83,10 +77,10 @@ module.exports.likeCard = (req, res) => {
       if (error.name === 'CastError') {
         res
           .status(incorrectDataError)
-          .send({ message: 'Передан несуществующий _id карточки' });
+          .send({ message: 'Невалидный _id карточки' });
       } else if (error.name === 'Error') {
         res.status(dataNotFoundError).send({
-          message: 'Переданы некорректные данные для постановки лайка',
+          message: error.message,
         });
       } else {
         res
@@ -111,10 +105,10 @@ module.exports.dislikeCard = (req, res) => {
       if (error.name === 'CastError') {
         res
           .status(incorrectDataError)
-          .send({ message: 'Передан несуществующий _id карточки' });
+          .send({ message: 'Невалидный _id карточки' });
       } else if (error.name === 'Error') {
         res.status(dataNotFoundError).send({
-          message: 'Переданы некорректные данные для снятия лайка',
+          message: error.message,
         });
       } else {
         res

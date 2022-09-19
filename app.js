@@ -27,6 +27,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use('/users', userRoute);
 app.use('/cards', cardRoute);
-app.use('/404', (req, res) => res.status(404).send({ message: 'Страница не найдена' }));
+app.use('/', (req, res) => res.status(404).send({ message: 'Страница не найдена' }));
 
 app.listen(3000);
