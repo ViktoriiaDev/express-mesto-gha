@@ -5,8 +5,8 @@ const AuthorisationError = require('../errors/AuthorisationError');
 module.exports.auth = (req, res, next) => {
   const authorization = req.headers.cookie;
 
-  if (!authorization || !authorization.startsWith('token')) {
-    throw (new AuthorisationError('Необходима авторизация'));
+  if (!authorization) {
+    return next(new AuthorisationError('Необходима авторизация'));
   }
 
   const token = authorization.replace('token=', '');
