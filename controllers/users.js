@@ -4,6 +4,8 @@ const User = require('../models/user');
 
 const NotFoundError = require('../errors/NotFoundError');
 const ValidationError = require('../errors/ValidationError');
+const ConflictError = require('../errors/ConflictError');
+const AuthorisationError = require('../errors/AuthorisationError');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -43,8 +45,14 @@ module.exports.createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
-  bcrypt
-    .hash(password, 10)
+  User.findOne({ email })
+    // eslint-disable-next-line consistent-return
+    .then((user) => {
+      if (user) {
+        return next(new ConflictError('Пользователь с такой почтой уже существует'));
+      }
+    })
+    .then(() => bcrypt.hash(password, 10))
     .then((hash) => User.create({
       name,
       about,
@@ -115,5 +123,10 @@ module.exports.login = (req, res, next) => {
       // вернём токен
       res.send({});
     })
-    .catch(next);
+    .catch((error) => {
+      if (error.name === 'Error') {
+        return next(new AuthorisationError('Неправильные почта или пароль'));
+      }
+      return next(error);
+    });
 };

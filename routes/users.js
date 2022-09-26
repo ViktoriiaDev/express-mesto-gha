@@ -12,9 +12,9 @@ router.patch('/me', celebrate({
     about: Joi.string().required().min(2).max(30),
   }),
 }), patchUser);
-router.get('/:id',celebrate({
+router.get('/:id', celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().alphanum().length(24),
+    id: Joi.string().alphanum().length(24),
   }),
 }), getUserById);
 router.patch('/me/avatar', celebrate({
