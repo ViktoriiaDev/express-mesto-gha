@@ -33,7 +33,7 @@ module.exports.checkCardOwner = (req, res, next) => {
   Card.findById({ _id: cardId })
     // eslint-disable-next-line consistent-return
     .then((card) => {
-      if (card.owner.toString() !== req.user._id) {
+      if (card && card.owner.toString() !== req.user._id) {
         return next(new ForbiddenError('Невозможно удалить чужую карточку'));
       }
       next();
