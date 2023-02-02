@@ -1,20 +1,22 @@
-[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml)
-# Проект Mesto фронтенд + бэкенд
+# Проект: Место (backend часть)
 
+## Функциональность
+Для проекта Место написан backend, который проверяет валидацию для паттернов на бэке, 
+записывает валидную информацию в базу данных.
 
-
-## Настройка бейджей статуса тестов
-Перед началом работы над проектом рекомендуется исправить бейджи, отражающие статус прохождения тестов.
-Для этого замените разметку бейджей на следующий фрагмент, подставив вместо `ViktoriiaDev` и `express-mesto-gha` соответствующие значения.
-
+## Используемые технологии:
+- HTML;
+- CSS;
+- JavaScript,
+- React,
+- MongoDB,
+- Eslint.
 
 ## Директории
 
 `/routes` — папка с файлами роутера  
 `/controllers` — папка с файлами контроллеров пользователя и карточки   
 `/models` — папка с файлами описания схем пользователя и карточки  
-  
-Остальные директории вспомогательные, создаются при необходимости разработчиком
 
 ## Запуск проекта
 
